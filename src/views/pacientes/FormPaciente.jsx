@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 const FormPaciente = ({
-    modal, toggle, handleSubmit, register,submit
+    modal, toggle, handleSubmit, register, submit
 }) => {
     return (
         <Modal isOpen={modal} toggle={toggle} size='lg'>
@@ -11,18 +11,60 @@ const FormPaciente = ({
             </ModalHeader>
             <ModalBody>
                 <form onSubmit={handleSubmit(submit)}>
-                    <div className='form-group'>
+                    <div className='form-group my-2'>
                         <label htmlFor="">
-                            Nombre
+                            Nombres
                         </label>
                         <input
                             className="form-control"
                             type="text"
-                            placeholder='ingrese nombre'
+                            placeholder='ingrese nombres'
                             {...register('nombre')}
                         />
                     </div>
-                    <button className='btn btn-primary mx-4 mb-2'>Enviar</button>
+                    <div className='form-group my-2'>
+                        <label htmlFor="">
+                            Apellido Paterno
+                        </label>
+                        <input
+                            className="form-control"
+                            type="text"
+                            placeholder='ingrese apellido paterno'
+                            {...register('apellido_paterno')}
+                        />
+                    </div>
+                    <div className='form-group my-2'>
+                        <label htmlFor="">
+                            Apellido Materno
+                        </label>
+                        <input
+                            className="form-control"
+                            type="text"
+                            placeholder='ingrese apellido materno'
+                            {...register('apellido_materno')}
+                        />
+                    </div>
+                    <div className='form-group my-2'>
+                        <label htmlFor="">
+                            Telefono
+                        </label>
+                        <input
+                            className="form-control"
+                            type="text"
+                            placeholder='ingrese telefono'
+                            {...register('telefono')}
+                        />
+                    </div>
+                    <div className='form-group my-2'>
+                        <label htmlFor="">
+                            Estado
+                        </label>
+                        <select className="form-select" id="status" {...register('status')}  >
+                            <option value="1">Activo</option>
+                            <option value="0">Suspendido</option>
+                        </select>
+                    </div>
+                    <button className='btn btn-primary mb-2'>Enviar</button>
                 </form>
             </ModalBody>
         </Modal>

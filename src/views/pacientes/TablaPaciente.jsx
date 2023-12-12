@@ -5,7 +5,7 @@ import { Card, CardBody, CardHeader } from 'reactstrap'
 
 const TablaPaciente = ({
     data, setCurrentPage, setPerPage, totalRows, filter, search,
-
+    actualizarNoriciaId, eliminarPaciente
 }) => {
     const columns = [
         {
@@ -50,12 +50,12 @@ const TablaPaciente = ({
                     <div className='d-flex gap-1 my-1'>
 
                         <button className='btn btn-warning'
-                        // onClick={() => updateNoticiaById(row?.id)}
+                            onClick={() => actualizarNoriciaId(row?.id)}
                         >
                             <Edit />
                         </button>
-                        <button className='btn btn-danger'
-                        // onClick={() => updateNoticiaById(row?.id)}
+                        <button className='btn' style={{backgroundColor: '#DC3545', color: 'white'}}
+                            onClick={() => eliminarPaciente(row?.id)}
                         >
                             <Trash />
                         </button>

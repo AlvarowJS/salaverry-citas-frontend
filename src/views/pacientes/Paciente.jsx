@@ -4,7 +4,12 @@ import { Button, Col, Input, Label, Row } from 'reactstrap'
 import bdCitas from '../../api/bdCitas'
 import { useForm } from 'react-hook-form'
 import FormPaciente from './FormPaciente'
+// Sweet Alert
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
 
+const URL = '/v1/pacientes'
 const Paciente = () => {
 
   const token = localStorage.getItem('token')
@@ -15,7 +20,9 @@ const Paciente = () => {
   const [search, setSearch] = useState()
   const [filter, setFilter] = useState()
   const [modal, setModal] = useState(false)
+  const [actualizacion, setActualizacion] = useState(false)
   const { handleSubmit, register, reset } = useForm()
+  const [refresh, setRefresh] = useState(false)
   const defaulValuesForm = {
     nombre: '',
     apellido_paterno: '',
@@ -23,17 +30,18 @@ const Paciente = () => {
     telefono: '',
     status: '',
   }
+  const getAuthHeaders = () => ({
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  });
 
   const toggle = () => {
+    setActualizacion(false)
     setModal(!modal)
   }
   useEffect(() => {
-    bdCitas.get(`/v1/pacientes?page=${currentPage}&per_page=${perPage}`,
-      {
-        headers: {
-          'Authorization': 'Bearer ' + token
-        }
-      })
+    bdCitas.get(`${URL}?page=${currentPage}&per_page=${perPage}`, getAuthHeaders())
       .then(res => {
         setData(res.data.data)
         setTotalRows(res.data.total)
@@ -41,7 +49,7 @@ const Paciente = () => {
       .catch(err => {
 
       })
-  }, [currentPage, perPage])
+  }, [currentPage, perPage, refresh])
 
   const handleFilter = (e) => {
     setSearch(e.target.value);
@@ -57,12 +65,113 @@ const Paciente = () => {
   }, [search])
 
   // Crear Paciente
-  const crearPaciente = () => {
+  const crearPaciente = (data) => {
+    bdCitas.post(URL, data, getAuthHeaders())
+      .then(res => {
+        console.log(res.data)
+        reset(defaulValuesForm)
+        toggle.call()
+        setRefresh(!refresh)
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Paciente creado',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      })
+      .catch(err => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Contacte con soporte',
+          showConfirmButton: false,
+        })
+      })
+  }
+
+  // Actualiza paciente (PUT)
+  const actualizarPaciente = (id, data) => {
+    bdCitas.put(`${URL}/${id}`, data, getAuthHeaders())
+      .then(res => {
+        console.log(res.data)
+        reset(defaulValuesForm)
+        toggle.call()
+        setRefresh(!refresh)
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Paciente Actulizado',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      })
+      .catch(err => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Contacte con soporte',
+          showConfirmButton: false,
+        })
+      })
+  }
+  const eliminarPaciente = (id) => {
+    return MySwal.fire({
+      title: '¿Estás seguro de eliminar?',
+      text: "¡No podrás revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      customClass: {
+        confirmButton: 'btn btn-primary',
+        cancelButton: 'btn btn-outline-danger ms-1'
+      },
+      buttonsStyling: false
+    }).then(function (result) {
+      if (result.value) {
+        bdCitas.delete(`${URL}/${id}`, getAuthHeaders())
+          .then(res => {
+            setRefresh(!refresh)
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Paciente Eliminado',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          })
+          .catch(err => {
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Contacte con soporte',
+              showConfirmButton: false,
+            })
+          })
+      }
+    })
+
 
   }
 
-  const submit = (data) => {
+  // Tomara los datos que tiene un registro
+  const actualizarNoriciaId = (id) => {
+    toggle.call()
+    setActualizacion(true)
+    bdCitas.get(`${URL}/${id}`, getAuthHeaders())
+      .then(res => {
+        reset(res.data)
+      })
+      .catch(err => null)
+  }
 
+  // Si es actualizacion llamara a actualizarPaciente pero si es false crear un paciente
+  const submit = (data) => {
+    if (actualizacion) {
+      actualizarPaciente(data.id, data)
+    } else {
+      crearPaciente(data)
+    }
   }
 
   return (
@@ -84,7 +193,7 @@ const Paciente = () => {
         <Col sm='4'></Col>
         <Col sm='2' className='mt-2'>
 
-          <Button onClick={toggle}>
+          <Button onClick={toggle} color='primary'>
             + Agregar
           </Button>
         </Col>
@@ -97,7 +206,9 @@ const Paciente = () => {
         perPage={perPage}
         totalRows={totalRows}
         filter={filter}
-        search={search}        
+        search={search}
+        actualizarNoriciaId={actualizarNoriciaId}
+        eliminarPaciente={eliminarPaciente}
       />
       <FormPaciente
         toggle={toggle}
