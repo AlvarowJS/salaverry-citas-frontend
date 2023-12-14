@@ -1,11 +1,11 @@
 import React from 'react'
 import DataTable from 'react-data-table-component'
-import { Delete, Edit, Trash } from 'react-feather'
-import { Card, CardBody, CardHeader } from 'reactstrap'
+import { Edit, Trash } from 'react-feather'
+import { Card } from 'reactstrap'
 
-const TablaPaciente = ({
-    data, setCurrentPage, setPerPage, totalRows, filter, search,
-    actualizarPacienteId, eliminarPaciente
+const TablaMedicos = ({
+    data, filter, search,
+    actualizarMedicoId, eliminarMedico
 }) => {
     const columns = [
         {
@@ -33,12 +33,7 @@ const TablaPaciente = ({
             minWidth: '50px',
             selector: row => row?.apellido_materno
         },
-        {
-            sortable: true,
-            name: 'Telefono',
-            minWidth: '25px',
-            selector: row => row?.telefono
-        },
+
         {
             name: 'Acciones',
             sortable: true,
@@ -50,12 +45,12 @@ const TablaPaciente = ({
                     <div className='d-flex gap-1 my-1'>
 
                         <button className='btn btn-warning'
-                            onClick={() => actualizarPacienteId(row?.id)}
+                            onClick={() => actualizarMedicoId(row?.id)}
                         >
                             <Edit />
                         </button>
-                        <button className='btn' style={{backgroundColor: '#DC3545', color: 'white'}}
-                            onClick={() => eliminarPaciente(row?.id)}
+                        <button className='btn' style={{ backgroundColor: '#DC3545', color: 'white' }}
+                            onClick={() => eliminarMedico(row?.id)}
                         >
                             <Trash />
                         </button>
@@ -65,31 +60,18 @@ const TablaPaciente = ({
         }
 
     ]
-
-    const handlePageChange = page => {
-        setCurrentPage(page)
-    }
-
-    const handlePerRowsChange = (newPerPage, page) => {
-        setPerPage(newPerPage)
-        setCurrentPage(page)
-    }
     return (
         <Card className='mt-2'>
-            <DataTable
-                noHeader
-                pagination
-                paginationServer
-                className='react-datatable'
-                columns={columns}
-                data={search ? filter : data}
-                paginationTotalRows={totalRows}
-                onChangeRowsPerPage={handlePerRowsChange}
-                onChangePage={handlePageChange}
+        <DataTable
+            noHeader
+            pagination
+            className='react-datatable'
+            columns={columns}
+            data={search ? filter : data}
 
-            />
-        </Card>
+        />
+    </Card>
     )
 }
 
-export default TablaPaciente
+export default TablaMedicos

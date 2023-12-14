@@ -1,11 +1,11 @@
 import React from 'react'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
-const FormPaciente = ({
-    modal, toggle, handleSubmit, register, submit,toggleActualizacion
+const FormMedico = ({
+    modal, toggle, handleSubmit, register, submit
 }) => {
     return (
-        <Modal isOpen={modal} toggle={toggle || toggleActualizacion} size='lg'>
+        <Modal isOpen={modal} toggle={toggle} size='lg'>
             <ModalHeader>
                 Registrar Paciente
             </ModalHeader>
@@ -43,18 +43,7 @@ const FormPaciente = ({
                             placeholder='ingrese apellido materno'
                             {...register('apellido_materno')}
                         />
-                    </div>
-                    <div className='form-group my-2'>
-                        <label htmlFor="">
-                            Telefono
-                        </label>
-                        <input
-                            className="form-control"
-                            type="text"
-                            placeholder='ingrese telefono'
-                            {...register('telefono')}
-                        />
-                    </div>
+                    </div>            
                     <div className='form-group my-2'>
                         <label htmlFor="">
                             Estado
@@ -71,4 +60,4 @@ const FormPaciente = ({
     )
 }
 
-export default FormPaciente
+export default FormMedico

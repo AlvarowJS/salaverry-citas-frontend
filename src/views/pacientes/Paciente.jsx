@@ -36,10 +36,16 @@ const Paciente = () => {
     }
   });
 
-  const toggle = () => {
-    setActualizacion(false)
-    setModal(!modal)
+  const toggle = () => {  
+    setActualizacion(false)  
+    reset(defaulValuesForm)
+    setModal(!modal)    
   }
+
+  const toggleActualizacion = () => {
+    setModal(!modal)    
+  }
+  
   useEffect(() => {
     bdCitas.get(`${URL}?page=${currentPage}&per_page=${perPage}`, getAuthHeaders())
       .then(res => {
@@ -68,7 +74,6 @@ const Paciente = () => {
   const crearPaciente = (data) => {
     bdCitas.post(URL, data, getAuthHeaders())
       .then(res => {
-        console.log(res.data)
         reset(defaulValuesForm)
         toggle.call()
         setRefresh(!refresh)
@@ -94,7 +99,6 @@ const Paciente = () => {
   const actualizarPaciente = (id, data) => {
     bdCitas.put(`${URL}/${id}`, data, getAuthHeaders())
       .then(res => {
-        console.log(res.data)
         reset(defaulValuesForm)
         toggle.call()
         setRefresh(!refresh)
@@ -155,18 +159,20 @@ const Paciente = () => {
   }
 
   // Tomara los datos que tiene un registro
-  const actualizarNoriciaId = (id) => {
-    toggle.call()
+  const actualizarPacienteId = (id) => {
+    toggleActualizacion.call()
     setActualizacion(true)
     bdCitas.get(`${URL}/${id}`, getAuthHeaders())
       .then(res => {
         reset(res.data)
+
       })
       .catch(err => null)
   }
 
   // Si es actualizacion llamara a actualizarPaciente pero si es false crear un paciente
   const submit = (data) => {
+
     if (actualizacion) {
       actualizarPaciente(data.id, data)
     } else {
@@ -207,11 +213,12 @@ const Paciente = () => {
         totalRows={totalRows}
         filter={filter}
         search={search}
-        actualizarNoriciaId={actualizarNoriciaId}
+        actualizarPacienteId={actualizarPacienteId}
         eliminarPaciente={eliminarPaciente}
       />
       <FormPaciente
         toggle={toggle}
+        toggleActualizacion={toggleActualizacion}
         modal={modal}
         handleSubmit={handleSubmit}
         submit={submit}
