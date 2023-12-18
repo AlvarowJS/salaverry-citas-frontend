@@ -1,10 +1,9 @@
 import React from 'react'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
-const FormMedico = ({
+const FormConsultorio = ({
     modal, toggle, handleSubmit, register, submit,
     toggleActualizacion
-
 }) => {
     return (
         <Modal isOpen={modal} toggle={toggle} size='lg'>
@@ -45,7 +44,7 @@ const FormMedico = ({
                             placeholder='ingrese apellido materno'
                             {...register('apellido_materno')}
                         />
-                    </div>            
+                    </div>
                     <div className='form-group my-2'>
                         <label htmlFor="">
                             Estado
@@ -62,4 +61,4 @@ const FormMedico = ({
     )
 }
 
-export default FormMedico
+export default FormConsultorio

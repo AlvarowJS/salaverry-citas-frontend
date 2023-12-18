@@ -4,6 +4,11 @@ import bdCitas from '../../api/bdCitas'
 import { useForm } from 'react-hook-form'
 import TablaMedicos from './TablaMedicos'
 import FormMedico from './FormMedico'
+// Sweet Alert
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
+
 
 const URL = '/v1/medicos'
 const Medico = () => {
@@ -28,8 +33,13 @@ const Medico = () => {
   });
 
   const toggle = () => {
-    setActualizacion(false)
+    setActualizacion(false)  
+    reset(defaulValuesForm)
     setModal(!modal)
+  }
+
+   const toggleActualizacion = () => {
+    setModal(!modal)    
   }
 
   useEffect(() => {
@@ -147,7 +157,7 @@ const Medico = () => {
 
   // Tomara los datos que tiene un registro
   const actualizarMedicoId = (id) => {
-    toggle.call()
+    toggleActualizacion.call()
     setActualizacion(true)
     bdCitas.get(`${URL}/${id}`, getAuthHeaders())
       .then(res => {
@@ -198,6 +208,7 @@ const Medico = () => {
       />
       <FormMedico
         toggle={toggle}
+        toggleActualizacion={toggleActualizacion}
         modal={modal}
         handleSubmit={handleSubmit}
         submit={submit}
