@@ -24,7 +24,7 @@ const TablaConsultorio = ({
       sortable: true,
       name: 'Ubicación',
       minWidth: '50px',
-      selector: row => row?.ubicacion_id
+      selector: row => row?.ubicacion?.nombre_ubicacion
     },
 
     {
@@ -38,12 +38,12 @@ const TablaConsultorio = ({
           <div className='d-flex gap-1 my-1'>
 
             <button className='btn btn-warning'
-              onClick={() => actualizarMedicoId(row?.id)}
+              onClick={() => actualizarConsultorioId(row?.id)}
             >
               <Edit />
             </button>
             <button className='btn' style={{ backgroundColor: '#DC3545', color: 'white' }}
-              onClick={() => eliminarMedico(row?.id)}
+              onClick={() => eliminarConsultorio(row?.id)}
             >
               <Trash />
             </button>

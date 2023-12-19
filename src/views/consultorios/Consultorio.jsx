@@ -7,6 +7,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import TablaConsultorio from './TablaConsultorio'
 import FormConsultorio from './FormConsultorio'
+import Ubicacion from './Ubicacion'
 const MySwal = withReactContent(Swal)
 const URL = '/v1/consultorio'
 
@@ -16,14 +17,13 @@ const Consultorio = () => {
   const [search, setSearch] = useState()
   const [filter, setFilter] = useState()
   const [modal, setModal] = useState(false)
+  const [modalUbicacion, setModalUbicacion] = useState(false)
   const [actualizacion, setActualizacion] = useState(false)
   const { handleSubmit, register, reset } = useForm()
   const [refresh, setRefresh] = useState(false)
   const defaulValuesForm = {
-    nombre: '',
-    apellido_paterno: '',
-    apellido_materno: '',
-    status: '',
+    numero_consultorio: '',
+    ubicacion_id: '',
   }
   const getAuthHeaders = () => ({
     headers: {
@@ -39,6 +39,10 @@ const Consultorio = () => {
 
   const toggleActualizacion = () => {
     setModal(!modal)
+  }
+
+  const toggleUbicacion = () => {
+    setModalUbicacion(!modalUbicacion)
   }
 
   useEffect(() => {
@@ -93,7 +97,7 @@ const Consultorio = () => {
         Swal.fire({
           position: 'center',
           icon: 'success',
-          title: 'Consultorio Actulizado',
+          title: 'Consultorio Actualizado',
           showConfirmButton: false,
           timer: 1500
         })
@@ -181,9 +185,16 @@ const Consultorio = () => {
             onChange={handleFilter}
           />
         </Col>
-        <Col sm='4'></Col>
-        <Col sm='2' className='mt-2'>
+        <Col sm='2'>
 
+        </Col>
+        <Col sm='2' className='mt-2'>
+          <Button onClick={toggleUbicacion} color='secondary'>
+            + Crear ubicación
+          </Button>
+
+        </Col>
+        <Col sm='2' className='mt-2'>
           <Button onClick={toggle} color='primary'>
             + Agregar
           </Button>
@@ -204,6 +215,17 @@ const Consultorio = () => {
         submit={submit}
         register={register}
         reset={reset}
+        getAuthHeaders={getAuthHeaders}
+      />
+
+      <Ubicacion
+        toggleUbicacion={toggleUbicacion}
+        modalUbicacion={modalUbicacion}
+        getAuthHeaders={getAuthHeaders}
+        setRefresh={setRefresh}
+        refresh={refresh}
+        MySwal={MySwal}
+        Swal={Swal}
       />
     </>
   )
