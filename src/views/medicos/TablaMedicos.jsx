@@ -62,15 +62,15 @@ const TablaMedicos = ({
     ]
     return (
         <Card className='mt-2'>
-        <DataTable
-            noHeader
-            pagination
-            className='react-datatable'
-            columns={columns}
-            data={search ? filter : data}
+            <DataTable
+                noHeader
+                pagination
+                className='react-datatable'
+                columns={columns}
+                data={search ? filter : data}
 
-        />
-    </Card>
+            />
+        </Card>
     )
 }
 
