@@ -23,6 +23,7 @@ const Usuario = () => {
     nombres: '',
     apellidos: '',
     email: '',
+    password: '',
     status: '',
   }
   const getAuthHeaders = () => ({
