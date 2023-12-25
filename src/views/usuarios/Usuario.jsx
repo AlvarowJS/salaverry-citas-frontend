@@ -56,7 +56,7 @@ const Usuario = () => {
 
   // Falta agregar el seach
 
-  // Crear Consultorio
+  // Crear Usuario
   const crearUsuario = (data) => {
     bdCitas.post(URL, data, getAuthHeaders())
       .then(res => {
@@ -67,7 +67,7 @@ const Usuario = () => {
         Swal.fire({
           position: 'center',
           icon: 'success',
-          title: 'Consultorio creado',
+          title: 'Usuario creado',
           showConfirmButton: false,
           timer: 1500
         })
@@ -93,7 +93,7 @@ const Usuario = () => {
         Swal.fire({
           position: 'center',
           icon: 'success',
-          title: 'Consultorio Actualizado',
+          title: 'Usuario Actualizado',
           showConfirmButton: false,
           timer: 1500
         })
