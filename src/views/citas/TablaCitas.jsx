@@ -1,21 +1,167 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
-import { Edit, Trash } from 'react-feather'
-import { Badge, Card } from 'reactstrap'
-
+import { Check, Edit, Trash, X } from 'react-feather'
+import { Row, Badge, Button, Card, Col } from 'reactstrap'
+import FormCita from './FormCita'
+import { useForm } from 'react-hook-form'
+import bdCitas from '../../api/bdCitas'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
 const TablaCitas = ({
-    cita,
-    actualizarCitaId, eliminarCita
-}) => {    
+    cita, dateChange, handleDate,
+    getAuthHeaders, URL, refresh, setRefresh
+
+}) => {
+    const [modal, setModal] = useState(false)
+    const [montoTotal, setMontoTotal] = useState()
+    const { handleSubmit, register, reset } = useForm()
+    const [actualizacion, setActualizacion] = useState(false)
+    const [paciente, setPaciente] = useState()
+    
+    const defaulValuesForm = {
+        confirmar: '',
+        entro: '',
+        fecha: '',
+        hora: '',
+        llego: '',
+        observacion: '',
+        paciente_id: '',
+        pago: '',
+        pago_tipo_id: '',
+        silla: '',
+        status: '',
+    }
+    const calcularSuma = () => {
+        const suma = cita?.citas.reduce((total, objeto) => {
+            return total + objeto?.pago;
+        }, 0);
+        return suma
+    }
+
+    const crearCita = (data) => {
+        bdCitas.post(URL, data, getAuthHeaders())
+            .then(res => {
+                console.log(res.data)
+                reset(defaulValuesForm)
+                toggle.call()
+                setRefresh(!refresh)
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Usuario creado',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            })
+            .catch(err => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Contacte con soporte',
+                    showConfirmButton: false,
+                })
+            })
+    }
+    const toggle = () => {
+        setActualizacion(false)
+        reset(defaulValuesForm)
+        setModal(!modal)
+    }
+
+    const toggleActualizacion = () => {
+        setModal(!modal)
+    }
+    // Actualiza Consultorio (PUT)
+    const actualizarCita = (id, data) => {
+        bdCitas.put(`${URL}/${id}`, data, getAuthHeaders())
+            .then(res => {
+                console.log(res.data)
+                reset(defaulValuesForm)
+                toggle.call()
+                setRefresh(!refresh)
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Usuario Actualizado',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            })
+            .catch(err => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Contacte con soporte',
+                    showConfirmButton: false,
+                })
+            })
+    }
+    const eliminarCita = (id) => {
+        return MySwal.fire({
+            title: '¿Estás seguro de eliminar?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si',
+            customClass: {
+                confirmButton: 'btn btn-primary',
+                cancelButton: 'btn btn-outline-danger ms-1'
+            },
+            buttonsStyling: false
+        }).then(function (result) {
+            if (result.value) {
+                bdCitas.delete(`${URL}/${id}`, getAuthHeaders())
+                    .then(res => {
+                        setRefresh(!refresh)
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Cita Eliminada',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    })
+                    .catch(err => {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Contacte con soporte',
+                            showConfirmButton: false,
+                        })
+                    })
+            }
+        })
+
+
+    }
+
+    const actualizarCitaId = (id) => {
+        toggleActualizacion.call()
+        setActualizacion(true)
+        bdCitas.get(`${URL}/${id}`, getAuthHeaders())
+            .then(res => {
+                reset(res.data)
+            })
+            .catch(err => null)
+    }
+
+    const submit = (data) => {
+        data.silla = data.silla == "" ? false : true
+        data.llego = data.llego == "" ? false : true
+        data.entro = data.entro == "" ? false : true
+        data.confirmar = data.confirmar == "" ? false : true
+        data.paciente_id = paciente.value
+        data.medico_id = cita.id
+        
+        if (actualizacion) {
+            actualizarCita(data.id, data)
+        } else {
+            crearCita(data)
+        }
+    }
 
     const columns = [
-        // {
-        //     sortable: true,
-        //     name: 'Conf',
-        //     minWidth: '25px',
-        //     maxWidth: '80px',
-        //     selector: row => row?.
-        // },
         {
             sortable: true,
             name: 'Conf',
@@ -23,6 +169,95 @@ const TablaCitas = ({
             maxWidth: '80px',
             selector: row => row?.id
         },
+        {
+            sortable: true,
+            name: 'Hora',
+            minWidth: '25px',
+            maxWidth: '100px',
+            selector: row => row?.hora
+        },
+        {
+            sortable: true,
+            name: 'Paciente',
+            minWidth: '25px',
+            maxWidth: '180px',
+            selector: row => row?.paciente?.nombre + ' ' + row?.paciente?.apellido_paterno + ' ' + row?.paciente?.apellido_materno
+        },
+        {
+            sortable: true,
+            name: 'Silla',
+            minWidth: '25px',
+            maxWidth: '100px',
+            selector: row => {
+                return (
+                    <>
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="checkboxNoLabel"
+                            value=""
+                            aria-label="..."
+                            checked={row?.silla}
+                        />
+                    </>
+                )
+            }
+        },
+        {
+            sortable: true,
+            name: 'Llego',
+            minWidth: '25px',
+            maxWidth: '100px',
+            selector: row => {
+                return (
+                    <>
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="checkboxNoLabel"
+                            value=""
+                            aria-label="..."
+                            checked={row?.llego}
+                        />
+                    </>
+                )
+            }
+        },
+        {
+            sortable: true,
+            name: 'Entro',
+            minWidth: '25px',
+            maxWidth: '100px',
+            selector: row => {
+                return (
+                    <>
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="checkboxNoLabel"
+                            value=""
+                            aria-label="..."
+                            checked={row?.entro}
+                        />
+                    </>
+                )
+            }
+        },
+        {
+            sortable: true,
+            name: 'Pago',
+            minWidth: '25px',
+            maxWidth: '100px',
+            selector: row => row?.pago
+        },
+        {
+            sortable: true,
+            name: 'Tipo de pago',
+            minWidth: '25px',
+            maxWidth: '150px',
+            selector: row => row?.pagotipo?.tipoPago
+        },
+
         {
             name: 'Acciones',
             sortable: true,
@@ -33,12 +268,12 @@ const TablaCitas = ({
                 return (
                     <div className='d-flex gap-1 my-1'>
 
-                        <button className='btn btn-warning'
+                        <button className='btn btn-warning'   style={{ fontSize: '12px', padding: '5px 10px' }}
                             onClick={() => actualizarCitaId(row?.id)}
                         >
                             <Edit />
                         </button>
-                        <button className='btn' style={{ backgroundColor: '#DC3545', color: 'white' }}
+                        <button className='btn' style={{ backgroundColor: '#DC3545', color: 'white', fontSize: '12px', padding: '5px 10px' }}
                             onClick={() => eliminarCita(row?.id)}
                         >
                             <Trash />
@@ -52,15 +287,44 @@ const TablaCitas = ({
     return (
         <>
             <Card className='mt-2'>
+                <Row className='p-2'>
+                    <Col>
+                        <h4>Dr {cita?.nombre} {cita?.apellido_paterno} {cita?.apellido_materno}</h4>
+                    </Col>
+                    <Col>
+                        <h4>Pago Total: $ {calcularSuma()}</h4>
+                    </Col>
+                    <Col>
+                        <Button color='info'
+                            onClick={toggle}
+                        >
+                            + Asignar Cita
+                        </Button>
+                    </Col>
+                </Row>
                 <DataTable
                     noHeader
                     pagination
                     className='react-datatable'
                     columns={columns}
-                    data={cita}
+                    data={cita.citas}
 
                 />
             </Card>
+
+            <FormCita
+                toggle={toggle}
+                toggleActualizacion={toggleActualizacion}
+                modal={modal}
+                handleSubmit={handleSubmit}
+                submit={submit}
+                register={register}
+                reset={reset}
+                getAuthHeaders={getAuthHeaders}
+
+                paciente={paciente}
+                setPaciente={setPaciente}
+            />
 
         </>
     )
