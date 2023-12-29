@@ -47,7 +47,7 @@ const TablaUsuario = ({
                                 </Badge>
                                 :
                                 <Badge color='light-warning'>
-                                    Suspendido
+                                    Inactivo
                                 </Badge>
 
                         }

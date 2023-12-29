@@ -52,7 +52,7 @@ const FormMedico = ({
                         </label>
                         <select className="form-select" id="status" {...register('status')}  >
                             <option value="1">Activo</option>
-                            <option value="0">Suspendido</option>
+                            <option value="0">Inactivo</option>
                         </select>
                     </div>
                     <button className='btn btn-primary mb-2'>Enviar</button>
