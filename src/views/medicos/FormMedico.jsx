@@ -1,15 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
+import bdCitas from '../../api/bdCitas'
 
 const FormMedico = ({
     modal, toggle, handleSubmit, register, submit,
-    toggleActualizacion
+    toggleActualizacion, getAuthHeaders
 
 }) => {
+    const [options, setOptions] = useState()
+    useEffect(() => {
+        bdCitas.get(`/v1/consultorio`, getAuthHeaders())
+            .then(res => {
+                setOptions(res.data)
+                console.log(res.data)
+            })
+            .catch(err => console.log(err))
+    }, [])
+
     return (
         <Modal isOpen={modal} toggle={toggle} size='lg'>
             <ModalHeader>
-                Registrar Paciente
+                Registrar Médico
             </ModalHeader>
             <ModalBody>
                 <form onSubmit={handleSubmit(submit)}>
@@ -45,7 +56,7 @@ const FormMedico = ({
                             placeholder='ingrese apellido materno'
                             {...register('apellido_materno')}
                         />
-                    </div>            
+                    </div>
                     <div className='form-group my-2'>
                         <label htmlFor="">
                             Estado
@@ -53,6 +64,22 @@ const FormMedico = ({
                         <select className="form-select" id="status" {...register('status')}  >
                             <option value="1">Activo</option>
                             <option value="0">Inactivo</option>
+                        </select>
+                    </div>
+                    <div className='form-group my-2'>
+                        <label htmlFor="">
+                            Ubicación
+                        </label>
+                        <select
+                            className="form-select"
+                            id="ubicacion_id"
+                            {...register("consultorio_id")}
+                        >
+                            {options?.map((option) => (
+                                <option key={option.id} value={option.id}>
+                                    {option.numero_consultorio} - {option?.ubicacion?.nombre_ubicacion}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <button className='btn btn-primary mb-2'>Enviar</button>

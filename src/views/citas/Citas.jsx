@@ -5,8 +5,10 @@ import bdCitas from '../../api/bdCitas'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import TablaCitas from './TablaCitas'
+import TablaMultiusos from './TablaMultiusos'
 const MySwal = withReactContent(Swal)
 const URL = '/v1/citas'
+const URLUSO = '/v1/multiusos'
 const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 
@@ -15,6 +17,7 @@ const Citas = () => {
   const [handleDate, setHandleDate] = useState([])
   const [dateChange, setDateChange] = useState()
   const [citas, setCitas] = useState()
+  const [multiusos, setMultiusos] = useState()
   const [montoTotal, setMontoTotal] = useState()
   const [search, setSearch] = useState()
   const [filter, setFilter] = useState()
@@ -79,15 +82,33 @@ const Citas = () => {
     bdCitas.get(`${URL}?date=${fechaFilter}`, getAuthHeaders())
       .then(res => {
         setCitas(res?.data)
-
       })
       .catch(err => {
-
       })
   }, [refresh, handleDate, dateChange])
+
+
+  useEffect(() => {
+
+    let fechaFilter
+    if (dateChange) {
+      fechaFilter = dateChange
+    } else {
+      fechaFilter = dateNow()
+      fechaFilter = fechaFilter[1]
+    }
+    // fechaFilter ? fechaFilter = dateChange : fechaFilter = handleDate[1]
+    bdCitas.get(`${URLUSO}?date=${fechaFilter}`, getAuthHeaders())
+      .then(res => {
+        setMultiusos(res?.data)
+      })
+      .catch(err => {
+      })
+  }, [refresh, handleDate, dateChange])
+
+
   const handleFilter = (e) => {
     setSearch(e.target.value);
-
   };
 
 
@@ -118,20 +139,35 @@ const Citas = () => {
           </select>
         </Col>
       </Row>
-
       {
-
-        citas?.map(cita => (
-          <TablaCitas
-            key={cita.id}
-            cita={cita}          
+        multiusos?.map(multiuso => (
+          <TablaMultiusos
+            key={multiuso.id}
+            multiuso={multiuso}
             dateChange={dateChange}
             handleDate={handleDate}
             montoTotal={montoTotal}
             refresh={refresh}
             setRefresh={setRefresh}
-            
-            URL={URL}         
+
+            URL={URLUSO}
+            getAuthHeaders={getAuthHeaders}
+          />
+        ))
+      }
+      {
+
+        citas?.map(cita => (
+          <TablaCitas
+            key={cita.id}
+            cita={cita}
+            dateChange={dateChange}
+            handleDate={handleDate}
+            montoTotal={montoTotal}
+            refresh={refresh}
+            setRefresh={setRefresh}
+
+            URL={URL}
             getAuthHeaders={getAuthHeaders}
           />
         ))

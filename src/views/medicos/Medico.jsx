@@ -214,6 +214,7 @@ const Medico = () => {
         submit={submit}
         register={register}
         reset={reset}
+        getAuthHeaders={getAuthHeaders}
       />
     </>
   )

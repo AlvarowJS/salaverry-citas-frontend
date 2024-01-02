@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
 import { Check, Edit, Trash, X } from 'react-feather'
 import { Row, Badge, Button, Card, Col } from 'reactstrap'
-import FormCita from './FormCita'
 import { useForm } from 'react-hook-form'
 import bdCitas from '../../api/bdCitas'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import FormMultiuso from './FormMultiuso'
 const MySwal = withReactContent(Swal)
-const TablaCitas = ({
-    cita, dateChange, handleDate,
+const TablaMultiusos = ({
+    multiuso, dateChange, handleDate,
     getAuthHeaders, URL, refresh, setRefresh
-
 }) => {
+
+    console.log(URL, "?")
     const [modal, setModal] = useState(false)
     const [montoTotal, setMontoTotal] = useState()
     const { handleSubmit, register, reset } = useForm()
@@ -31,18 +32,20 @@ const TablaCitas = ({
         pago_tipo_id: '',
         silla: '',
         status: '',
+        medico_id: '',
+        multiuso_id: ''
     }
     const calcularSuma = () => {
-        const suma = cita?.citas.reduce((total, objeto) => {
+        const suma = multiuso?.citas.reduce((total, objeto) => {
             return total + objeto?.pago;
         }, 0);
         return suma
     }
 
     const crearCita = (data) => {
+        console.log(data, "lolol")
         bdCitas.post(URL, data, getAuthHeaders())
             .then(res => {
-                console.log(res.data)
                 reset(defaulValuesForm)
                 toggle.call()
                 setRefresh(!refresh)
@@ -141,25 +144,23 @@ const TablaCitas = ({
         setActualizacion(true)
         bdCitas.get(`${URL}/${id}`, getAuthHeaders())
             .then(res => {
-                console.log(res.data, "citasss")
+                console.log(res.data, "??hola")
                 reset(res.data)
             })
             .catch(err => null)
     }
 
     const submit = (data) => {
-        data.silla = data.silla == "" ? false : true        
+        data.silla = data.silla == "" ? false : true
         data.confirmar = data.confirmar == "" ? false : true
         data.paciente_id = paciente.value
-        data.medico_id = cita.id
-
+        data.multiuso_id = multiuso.id
         if (actualizacion) {
             actualizarCita(data.id, data)
         } else {
             crearCita(data)
         }
     }
-
     const columns = [
         {
             sortable: true,
@@ -193,7 +194,44 @@ const TablaCitas = ({
             name: 'Paciente',
             minWidth: '25px',
             maxWidth: '180px',
-            selector: row => row?.paciente?.nombre + ' ' + row?.paciente?.apellido_paterno + ' ' + row?.paciente?.apellido_materno
+            selector: row => {
+                return (
+                    <>
+                        <p style={{ marginBottom: 0 }}>
+                            {
+                                row?.paciente?.nombre
+                            }
+                        </p>
+                        <p>
+                            {
+                                row?.paciente?.apellido_paterno + ' ' + row?.paciente?.apellido_materno
+                            }
+                        </p>
+                    </>
+                )
+            }
+        },
+        {
+            sortable: true,
+            name: 'Médico',
+            minWidth: '25px',
+            maxWidth: '180px',
+            selector: row => {
+                return (
+                    <>
+                        <p style={{ marginBottom: 0 }}>
+                            {
+                                row?.medico?.nombre
+                            }
+                        </p>
+                        <p>
+                            {
+                                row?.medico?.apellido_paterno + ' ' + row?.medico?.apellido_materno
+                            }
+                        </p>
+                    </>
+                )
+            }
         },
         {
             sortable: true,
@@ -291,7 +329,7 @@ const TablaCitas = ({
             <Card className='mt-2'>
                 <Row className='p-2'>
                     <Col>
-                        <h4>Dr {cita?.nombre} {cita?.apellido_paterno} {cita?.apellido_materno}</h4>
+                        <h4> {multiuso?.nombre_multiuso} </h4>
                     </Col>
                     <Col>
                         <h4>Pago Total: $ {calcularSuma()}</h4>
@@ -309,12 +347,12 @@ const TablaCitas = ({
                     pagination
                     className='react-datatable'
                     columns={columns}
-                    data={cita.citas}
+                    data={multiuso.citas}
 
                 />
             </Card>
 
-            <FormCita
+            <FormMultiuso
                 toggle={toggle}
                 toggleActualizacion={toggleActualizacion}
                 modal={modal}
@@ -323,7 +361,6 @@ const TablaCitas = ({
                 register={register}
                 reset={reset}
                 getAuthHeaders={getAuthHeaders}
-
                 paciente={paciente}
                 setPaciente={setPaciente}
             />
@@ -332,4 +369,4 @@ const TablaCitas = ({
     )
 }
 
-export default TablaCitas
+export default TablaMultiusos

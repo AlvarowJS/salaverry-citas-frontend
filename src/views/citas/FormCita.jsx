@@ -13,6 +13,7 @@ const FormCita = ({
   const [pacientes, setPacientes] = useState()
   const [tipoPagos, setTipoPagos] = useState()
   const [consultorios, setConsultorios] = useState()
+  const [estados, setEstados] = useState()
 
   useEffect(() => {
     bdCitas.get(`/v1/pacientes`, getAuthHeaders())
@@ -37,6 +38,14 @@ const FormCita = ({
     bdCitas.get(`/v1/pagos`, getAuthHeaders())
       .then(res => {
         setTipoPagos(res.data)
+      })
+      .catch(err => console.log(err))
+  }, [])
+
+  useEffect(() => {
+    bdCitas.get(`/v1/estados`, getAuthHeaders())
+      .then(res => {
+        setEstados(res.data)
       })
       .catch(err => console.log(err))
   }, [])
@@ -152,6 +161,44 @@ const FormCita = ({
                 </div>
               </Col>
             </Row>
+            <Row>
+              <Col>
+                <div className='form-group my-2'>
+                  <label htmlFor="llego">
+                    Llego
+                  </label>
+                  <select
+                    className="form-select"
+                    id="llego"
+                    {...register("llego")}
+                  >
+                    {estados?.map((estado) => (
+                      <option key={estado.signo_estado + ' - ' + estado.nombre_estado} value={estado.signo_estado + ' - ' + estado.nombre_estado}>
+                        {estado.signo_estado} - {estado.nombre_estado}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </Col>
+              <Col>
+                <div className='form-group my-2'>
+                  <label htmlFor="entro">
+                    Entro
+                  </label>
+                  <select
+                    className="form-select"
+                    id="entro"
+                    {...register("entro")}
+                  >
+                    {estados?.map((estado) => (
+                      <option key={estado.signo_estado + ' - ' + estado.nombre_estado} value={estado.signo_estado + ' - ' + estado.nombre_estado}>
+                        {estado.signo_estado} - {estado.nombre_estado}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </Col>
+            </Row>
             <div style={{ display: 'flex', justifyContent: 'center', gap: 50 }}>
               <div>
                 <label htmlFor="confirmar">Confirmar</label>
@@ -163,29 +210,7 @@ const FormCita = ({
                     {...register("confirmar")}
                   />
                 </div>
-              </div>
-              <div>
-                <label htmlFor="llego">Llego</label>
-                <div class="form-check form-switch">
-                  <input class="form-check-input"
-                    type="checkbox"
-                    role="switch"
-                    id="llego"
-                    {...register("llego")}
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="entro">Entro</label>
-                <div class="form-check form-switch">
-                  <input class="form-check-input"
-                    type="checkbox"
-                    role="switch"
-                    id="entro"
-                    {...register("entro")}
-                  />
-                </div>
-              </div>
+              </div>             
               <div>
                 <label htmlFor="silla">Silla</label>
                 <div class="form-check form-switch">

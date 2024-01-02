@@ -33,7 +33,13 @@ const TablaMedicos = ({
             minWidth: '50px',
             selector: row => row?.apellido_materno
         },
-
+        {
+            sortable: true,
+            name: 'Consultorio',
+            minWidth: '50px',
+            selector: row => row?.consultorio?.numero_consultorio +' '+ row?.consultorio?.ubicacion?.nombre_ubicacion
+            
+        },
         {
             name: 'Acciones',
             sortable: true,
