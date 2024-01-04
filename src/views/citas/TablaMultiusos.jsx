@@ -21,6 +21,7 @@ const TablaMultiusos = ({
     const [paciente, setPaciente] = useState()
 
     const defaulValuesForm = {
+        id: '',
         confirmar: '',
         entro: '',
         fecha: '',
@@ -92,13 +93,25 @@ const TablaMultiusos = ({
                 })
             })
             .catch(err => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Contacte con soporte',
-                    showConfirmButton: false,
-                })
-            })
+                console.log(err.response.status)
+                if (err.response && err.response.status === 409) {
+                    // Error 409: Conflicto, manejar de manera diferente
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'El horario seleccionado ya se encuentra ocupado.',
+                        showConfirmButton: false,
+                    })
+                } else {
+                    // Otros errores, mensaje genérico
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Contacte con soporte',
+                        showConfirmButton: false,
+                    })
+                }
+            });
     }
     const eliminarCita = (id) => {
         return MySwal.fire({
@@ -144,8 +157,11 @@ const TablaMultiusos = ({
         setActualizacion(true)
         bdCitas.get(`${URL}/${id}`, getAuthHeaders())
             .then(res => {
-                console.log(res.data, "??hola")
                 reset(res.data)
+                setPaciente({
+                    'value': res.data.paciente.id,
+                    'label': res.data.paciente.nombre + ' ' + res.data.paciente.apellido_paterno + ' ' + res.data.paciente.apellido_materno
+                })
             })
             .catch(err => null)
     }
@@ -162,6 +178,7 @@ const TablaMultiusos = ({
         }
     }
     const columns = [
+
         {
             sortable: true,
             name: 'Conf',

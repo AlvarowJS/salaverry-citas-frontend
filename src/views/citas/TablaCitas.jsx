@@ -42,7 +42,6 @@ const TablaCitas = ({
     const crearCita = (data) => {
         bdCitas.post(URL, data, getAuthHeaders())
             .then(res => {
-                console.log(res.data)
                 reset(defaulValuesForm)
                 toggle.call()
                 setRefresh(!refresh)
@@ -55,13 +54,25 @@ const TablaCitas = ({
                 })
             })
             .catch(err => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Contacte con soporte',
-                    showConfirmButton: false,
-                })
-            })
+                console.log(err.response.status)
+                if (err.response && err.response.status === 409) {
+                    // Error 409: Conflicto, manejar de manera diferente
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'El horario seleccionado ya se encuentra ocupado.',
+                        showConfirmButton: false,
+                    })
+                } else {
+                    // Otros errores, mensaje genérico
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Contacte con soporte',
+                        showConfirmButton: false,
+                    })
+                }
+            });
     }
     const toggle = () => {
         setActualizacion(false)
@@ -70,6 +81,7 @@ const TablaCitas = ({
     }
 
     const toggleActualizacion = () => {
+        setActualizacion(true)
         setModal(!modal)
     }
     // Actualiza Consultorio (PUT)
@@ -89,13 +101,25 @@ const TablaCitas = ({
                 })
             })
             .catch(err => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Contacte con soporte',
-                    showConfirmButton: false,
-                })
-            })
+                console.log(err.response.status)
+                if (err.response && err.response.status === 409) {
+                    // Error 409: Conflicto, manejar de manera diferente
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'El horario seleccionado ya se encuentra ocupado.',
+                        showConfirmButton: false,
+                    })
+                } else {
+                    // Otros errores, mensaje genérico
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Contacte con soporte',
+                        showConfirmButton: false,
+                    })
+                }
+            });
     }
     const eliminarCita = (id) => {
         return MySwal.fire({
@@ -139,16 +163,21 @@ const TablaCitas = ({
     const actualizarCitaId = (id) => {
         toggleActualizacion.call()
         setActualizacion(true)
+
         bdCitas.get(`${URL}/${id}`, getAuthHeaders())
             .then(res => {
-                console.log(res.data, "citasss")
                 reset(res.data)
+                setPaciente({
+                    'value': res.data.paciente.id,
+                    'label': res.data.paciente.nombre + ' ' + res.data.paciente.apellido_paterno + ' ' + res.data.paciente.apellido_materno
+                })
+
             })
             .catch(err => null)
     }
 
     const submit = (data) => {
-        data.silla = data.silla == "" ? false : true        
+        data.silla = data.silla == "" ? false : true
         data.confirmar = data.confirmar == "" ? false : true
         data.paciente_id = paciente.value
         data.medico_id = cita.id

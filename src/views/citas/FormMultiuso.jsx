@@ -58,7 +58,7 @@ const FormMultiuso = ({
     }));
     return (
         <>
-            <Modal isOpen={modal} toggle={toggle} size='lg'>
+            <Modal isOpen={modal} toggle={toggle || toggleActualizacion} size='lg'>
                 <ModalHeader>
                     Registrar Cita
                 </ModalHeader>

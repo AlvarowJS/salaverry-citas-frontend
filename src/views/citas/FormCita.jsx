@@ -52,6 +52,7 @@ const FormCita = ({
 
   const handleChangePaciente = (selected) => {
     setPaciente(selected);
+    console.log(selected,"?..?")
   };
 
 
@@ -60,6 +61,7 @@ const FormCita = ({
     label: optionPaciente?.nombre + " " + optionPaciente?.apellido_paterno + " " + optionPaciente?.apellido_materno
   }));
 
+  
   return (
     <>
       <Modal isOpen={modal} toggle={toggle} size='lg'>

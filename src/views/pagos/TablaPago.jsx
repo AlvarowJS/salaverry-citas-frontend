@@ -1,7 +1,7 @@
 import React from 'react'
 import DataTable from 'react-data-table-component'
 import { Edit, Trash } from 'react-feather'
-import { Card } from 'reactstrap'
+import { Badge, Card } from 'reactstrap'
 const TablaPago = ({
   data, filter, search,
   actualizarPagoId, eliminarPago
@@ -24,7 +24,24 @@ const TablaPago = ({
       sortable: true,
       name: 'Estado',
       minWidth: '50px',
-      selector: row => row?.status
+      selector: row => {
+        return (
+          <>
+            {
+              row?.status == true ?
+
+                <Badge color='light-success'>
+                  Activo
+                </Badge>
+                :
+                <Badge color='light-warning'>
+                  Inactivo
+                </Badge>
+
+            }
+          </>
+        )
+      }
     },
 
     {
