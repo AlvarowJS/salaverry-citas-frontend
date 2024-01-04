@@ -62,8 +62,8 @@ const FormMedico = ({
                             Estado
                         </label>
                         <select className="form-select" id="status" {...register('status')}  >
-                            <option value="1">Activo</option>
-                            <option value="0">Inactivo</option>
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
                         </select>
                     </div>
                     <div className='form-group my-2'>
