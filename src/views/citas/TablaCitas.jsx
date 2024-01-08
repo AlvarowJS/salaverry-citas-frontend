@@ -248,7 +248,7 @@ const TablaCitas = ({
             sortable: true,
             name: 'Llego',
             minWidth: '25px',
-            maxWidth: '100px',
+            maxWidth: '200px',
             selector: row => {
                 return (
                     <>
@@ -263,7 +263,7 @@ const TablaCitas = ({
             sortable: true,
             name: 'Entro',
             minWidth: '25px',
-            maxWidth: '100px',
+            maxWidth: '200px',
             selector: row => {
                 return (
                     <>

@@ -7,6 +7,7 @@ import FormMedico from './FormMedico'
 // Sweet Alert
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import ReporteMedico from './ReporteMedico'
 const MySwal = withReactContent(Swal)
 
 
@@ -17,9 +18,12 @@ const Medico = () => {
   const [search, setSearch] = useState()
   const [filter, setFilter] = useState()
   const [modal, setModal] = useState(false)
+  const [modalReporte, setModalReporte] = useState(false)
   const [actualizacion, setActualizacion] = useState(false)
   const { handleSubmit, register, reset } = useForm()
   const [refresh, setRefresh] = useState(false)
+  // Reporte PDF
+
   const defaulValuesForm = {
     nombre: '',
     apellido_paterno: '',
@@ -40,6 +44,10 @@ const Medico = () => {
 
    const toggleActualizacion = () => {
     setModal(!modal)    
+  }
+
+  const toggleReporte = () => {
+    setModalReporte(!modalReporte)
   }
 
   useEffect(() => {
@@ -191,7 +199,12 @@ const Medico = () => {
             onChange={handleFilter}
           />
         </Col>
-        <Col sm='4'></Col>
+        <Col sm='2'></Col>
+        <Col sm='2' className='mt-2'>
+        <Button onClick={toggleReporte} color='secondary'>
+            Reporte PDF
+          </Button>
+        </Col>
         <Col sm='2' className='mt-2'>
 
           <Button onClick={toggle} color='primary'>
@@ -214,6 +227,12 @@ const Medico = () => {
         submit={submit}
         register={register}
         reset={reset}
+        getAuthHeaders={getAuthHeaders}
+      />
+
+      <ReporteMedico
+        toggleReporte={toggleReporte}
+        modalReporte={modalReporte}
         getAuthHeaders={getAuthHeaders}
       />
     </>

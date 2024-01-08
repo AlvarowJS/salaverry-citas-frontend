@@ -7,7 +7,7 @@ const FormUsuario = ({
   return (
     <Modal isOpen={modal} toggle={toggle || toggleActualizacion} size='lg'>
       <ModalHeader>
-        Registrar Paciente
+        Registrar Usuario
       </ModalHeader>
       <ModalBody>
         <form onSubmit={handleSubmit(submit)}>

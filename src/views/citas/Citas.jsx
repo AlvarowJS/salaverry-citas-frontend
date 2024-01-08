@@ -116,27 +116,18 @@ const Citas = () => {
   return (
     <>
       <Row>
-        <Col>
+        <Col sm="3">
           <h2>{handleDate}</h2>
 
         </Col>
-        <Col>
+        <Col sm="6">
+
+        </Col>
+        <Col sm="3">
           <input type="date"
             className='form-control'
             onChange={cambiarFecha}
           />
-        </Col>
-        <Col>
-
-          <select className="form-select" id="">
-            <option value="">
-
-              Excel
-            </option>
-            <option value="">
-              PDF
-            </option>
-          </select>
         </Col>
       </Row>
       {

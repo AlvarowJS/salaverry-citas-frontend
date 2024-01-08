@@ -1,12 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import DataTable from 'react-data-table-component'
-import { Delete, Edit, Trash } from 'react-feather'
+import { Delete, Edit, Eye, Trash } from 'react-feather'
 import { Card, CardBody, CardHeader } from 'reactstrap'
+import CitaPaciente from './CitaPaciente'
 
 const TablaPaciente = ({
     data, setCurrentPage, setPerPage, totalRows, filter, search,
-    actualizarPacienteId, eliminarPaciente
+    actualizarPacienteId, eliminarPaciente, getAuthHeaders, bdCitas,
+    rol
 }) => {
+    const [citas, setCitas] = useState()
+    const [modalCita, setModalCita] = useState(false)
+
+
+    const verCita = (id) => {
+        toggleCitas.call()
+        bdCitas.get(`/v1/paciente-citas/${id}`, getAuthHeaders())
+            .then(res => {
+                setCitas(res.data)
+            })
+            .catch(err => null)
+    }
+    const toggleCitas = () => {
+        setModalCita(!modalCita)
+    }
     const columns = [
         {
             sortable: true,
@@ -48,17 +65,26 @@ const TablaPaciente = ({
             cell: row => {
                 return (
                     <div className='d-flex gap-1 my-1'>
-
-                        <button className='btn btn-warning'
+                        <button className='btn btn-success' style={{ fontSize: '12px', padding: '5px 10px' }}
+                            onClick={() => verCita(row?.id)}
+                        >
+                            <Eye />
+                        </button>
+                        <button className='btn btn-warning' style={{ fontSize: '12px', padding: '5px 10px' }}
                             onClick={() => actualizarPacienteId(row?.id)}
                         >
                             <Edit />
                         </button>
-                        <button className='btn' style={{backgroundColor: '#DC3545', color: 'white'}}
-                            onClick={() => eliminarPaciente(row?.id)}
-                        >
-                            <Trash />
-                        </button>
+                        {
+                            rol != 2 ?
+                                <button className='btn' style={{ backgroundColor: '#DC3545', color: 'white', fontSize: '12px', padding: '5px 10px' }}
+                                    onClick={() => eliminarPaciente(row?.id)}
+                                >
+                                    <Trash />
+                                </button>
+                                : null
+                        }
+
                     </div>
                 )
             }
@@ -87,6 +113,11 @@ const TablaPaciente = ({
                 onChangeRowsPerPage={handlePerRowsChange}
                 onChangePage={handlePageChange}
 
+            />
+            <CitaPaciente
+                citas={citas}
+                toggleCitas={toggleCitas}
+                modalCita={modalCita}
             />
         </Card>
     )

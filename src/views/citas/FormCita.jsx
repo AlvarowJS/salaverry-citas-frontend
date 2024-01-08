@@ -86,7 +86,7 @@ const FormCita = ({
                   />
                 </div>
               </Col>
-              <Col>
+              {/* <Col>
                 <div className='form-group my-2'>
                   <label htmlFor="pago_tipo_id">
                     Consultorio
@@ -103,7 +103,7 @@ const FormCita = ({
                     ))}
                   </select>
                 </div>
-              </Col>
+              </Col> */}
             </Row>
             <Row>
               <Col>

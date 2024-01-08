@@ -11,7 +11,7 @@ const MySwal = withReactContent(Swal)
 
 const URL = '/v1/pacientes'
 const Paciente = () => {
-
+  const rol = localStorage.getItem('rol')
   const token = localStorage.getItem('token')
   const [data, setData] = useState()
   const [currentPage, setCurrentPage] = useState(1)
@@ -215,6 +215,9 @@ const Paciente = () => {
         search={search}
         actualizarPacienteId={actualizarPacienteId}
         eliminarPaciente={eliminarPaciente}
+        getAuthHeaders={getAuthHeaders}
+        bdCitas={bdCitas}
+        rol={rol}
       />
       <FormPaciente
         toggle={toggle}
