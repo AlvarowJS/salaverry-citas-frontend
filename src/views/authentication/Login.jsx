@@ -20,7 +20,7 @@ import {
 } from "reactstrap";
 
 // ** Illustrations Imports
-import logo from "@src/assets/images/logo/logo.png";
+import logo from "@src/assets/images/logo/logo_nav.png";
 import illustrationsLight from "@src/assets/images/pages/login-v2.svg";
 import illustrationsDark from "@src/assets/images/pages/login-v2-dark.svg";
 
@@ -84,7 +84,7 @@ const Login = () => {
           sm="12"
         >
           <Col className="px-xl-2 mx-auto" sm="8" md="6" lg="12">
-            {/* <img className="img_local" src={logo} alt="Logo" style={{ width: 100 }} /> */}
+            <img className="img_local" src={logo} alt="Logo" style={{ width: 100 }} />
 
             <CardTitle tag="h2" className="fw-bold mb-1 mt-2">
               Bienvenido a Salaverry Citas Medicas
