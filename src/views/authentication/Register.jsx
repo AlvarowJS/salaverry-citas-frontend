@@ -25,7 +25,6 @@ import illustrationsDark from "@src/assets/images/pages/register-v2-dark.svg";
 // ** Styles
 import "@styles/react/pages/page-authentication.scss";
 import { useEffect, useState } from "react";
-import bdMuni from "../../api/bdMuni";
 import bdCitas from "../../api/bdCitas";
 
 const MySwal = withReactContent(Swal)
