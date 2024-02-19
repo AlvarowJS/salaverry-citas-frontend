@@ -43,7 +43,7 @@ const Login = () => {
 
   const submit = async (data) => {
     try {
-      const response = await bdCitas.post('/v1/login', data);  // Reemplaza '/tu-ruta-api' con la ruta real de tu API      
+      const response = await bdCitas.post('/v1/login', data);
       const res = response.data;    
       console.log(res, "?")  
       localStorage.setItem('token', res?.api_token);
@@ -58,7 +58,7 @@ const Login = () => {
     catch (err) {
       localStorage.setItem('token', '');
       localStorage.setItem('rol', '');
-      localStorage.setItem('idu', res?.user);
+      localStorage.setItem('idu', '');
       localStorage.setItem('nombres', '');
       localStorage.setItem('apellidos', '');
       setIsError(true)
