@@ -199,7 +199,7 @@ const TablaCitas = ({
                 return (
                     <>
                         <input
-                            class="form-check-input"
+                            className="form-check-input"
                             type="checkbox"
                             id="checkboxNoLabel"
                             value=""
@@ -233,7 +233,7 @@ const TablaCitas = ({
                 return (
                     <>
                         <input
-                            class="form-check-input"
+                            className="form-check-input"
                             type="checkbox"
                             id="checkboxNoLabel"
                             value=""

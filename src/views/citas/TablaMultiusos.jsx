@@ -188,7 +188,7 @@ const TablaMultiusos = ({
                 return (
                     <>
                         <input
-                            class="form-check-input"
+                            className="form-check-input"
                             type="checkbox"
                             id="checkboxNoLabel"
                             value=""
@@ -259,7 +259,7 @@ const TablaMultiusos = ({
                 return (
                     <>
                         <input
-                            class="form-check-input"
+                            className="form-check-input"
                             type="checkbox"
                             id="checkboxNoLabel"
                             value=""

@@ -10,20 +10,32 @@ const FormCita = ({
   paciente, setPaciente
 }) => {
   // const [options, setOptions] = useState()
+  // Pacientes es el conjjunto de pacientes y paciente solo al selecionar con select
   const [pacientes, setPacientes] = useState()
   const [tipoPagos, setTipoPagos] = useState()
   const [consultorios, setConsultorios] = useState()
   const [estados, setEstados] = useState()
+  const [celularPaciente, setCelularPaciente] = useState()
 
   useEffect(() => {
     bdCitas.get(`/v1/pacientes`, getAuthHeaders())
       .then(res => {
         setPacientes(res.data.data)
-        console.log(res.data.data)
-
+        
       })
       .catch(err => console.log(err))
   }, [])
+
+  useEffect(() => {
+    if (pacientes && paciente) {
+      let idPaciente = paciente?.value
+      let pacienteEncontrado = pacientes.find(e => e.id == idPaciente)
+      setCelularPaciente(pacienteEncontrado?.telefono)
+    } else {
+      setCelularPaciente('')
+    }
+  }, [paciente])
+
 
   useEffect(() => {
     bdCitas.get(`/v1/consultorio`, getAuthHeaders())
@@ -52,7 +64,6 @@ const FormCita = ({
 
   const handleChangePaciente = (selected) => {
     setPaciente(selected);
-    console.log(selected,"?..?")
   };
 
 
@@ -61,7 +72,7 @@ const FormCita = ({
     label: optionPaciente?.nombre + " " + optionPaciente?.apellido_paterno + " " + optionPaciente?.apellido_materno
   }));
 
-  
+
   return (
     <>
       <Modal isOpen={modal} toggle={toggle} size='lg'>
@@ -104,6 +115,11 @@ const FormCita = ({
                   </select>
                 </div>
               </Col> */}
+            </Row>
+            <Row>
+              <Col>
+                Número de telefono: <b>{celularPaciente}</b>
+              </Col>
             </Row>
             <Row>
               <Col>
@@ -204,19 +220,19 @@ const FormCita = ({
             <div style={{ display: 'flex', justifyContent: 'center', gap: 50 }}>
               <div>
                 <label htmlFor="confirmar">Confirmar</label>
-                <div class="form-check form-switch">
-                  <input class="form-check-input"
+                <div className="form-check form-switch">
+                  <input className="form-check-input"
                     type="checkbox"
                     role="switch"
                     id="confirmar"
                     {...register("confirmar")}
                   />
                 </div>
-              </div>             
+              </div>
               <div>
                 <label htmlFor="silla">Silla</label>
-                <div class="form-check form-switch">
-                  <input class="form-check-input"
+                <div className="form-check form-switch">
+                  <input className="form-check-input"
                     type="checkbox"
                     role="switch"
                     id="silla"

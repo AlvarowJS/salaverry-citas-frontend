@@ -20,7 +20,7 @@ const Citas = () => {
   const [multiusos, setMultiusos] = useState()
   const [montoTotal, setMontoTotal] = useState()
   const [search, setSearch] = useState()
-  const [filter, setFilter] = useState()
+  const [filterCitas, setFilterCitas] = useState()
 
   const [refresh, setRefresh] = useState(false)
   const defaulValuesForm = {
@@ -107,8 +107,13 @@ const Citas = () => {
   }, [refresh, handleDate, dateChange])
 
 
-  const handleFilter = (e) => {
-    setSearch(e.target.value);
+
+  const buscarNombre = (e) => {
+    let nombreMedicos = e.target.value;
+    let citaBusqueda = citas.filter(cita =>
+      cita.nombre.toLowerCase().includes(nombreMedicos.toLowerCase())
+    )
+    setFilterCitas(citaBusqueda)
   };
 
 
@@ -121,7 +126,10 @@ const Citas = () => {
 
         </Col>
         <Col sm="6">
-
+          <input type="text"
+            className='form-control'
+            onChange={buscarNombre}
+          />
         </Col>
         <Col sm="3">
           <input type="date"
@@ -147,21 +155,36 @@ const Citas = () => {
         ))
       }
       {
+        filterCitas ?
+          filterCitas?.map(filterCita => (
+            <TablaCitas
+              key={filterCita.id}
+              cita={filterCita}
+              dateChange={dateChange}
+              handleDate={handleDate}
+              montoTotal={montoTotal}
+              refresh={refresh}
+              setRefresh={setRefresh}
 
-        citas?.map(cita => (
-          <TablaCitas
-            key={cita.id}
-            cita={cita}
-            dateChange={dateChange}
-            handleDate={handleDate}
-            montoTotal={montoTotal}
-            refresh={refresh}
-            setRefresh={setRefresh}
+              URL={URL}
+              getAuthHeaders={getAuthHeaders}
+            />
+          ))
+          :
+          citas?.map(cita => (
+            <TablaCitas
+              key={cita.id}
+              cita={cita}
+              dateChange={dateChange}
+              handleDate={handleDate}
+              montoTotal={montoTotal}
+              refresh={refresh}
+              setRefresh={setRefresh}
 
-            URL={URL}
-            getAuthHeaders={getAuthHeaders}
-          />
-        ))
+              URL={URL}
+              getAuthHeaders={getAuthHeaders}
+            />
+          ))
       }
 
     </>

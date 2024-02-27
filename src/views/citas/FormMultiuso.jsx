@@ -13,12 +13,12 @@ const FormMultiuso = ({
     const [pacientes, setPacientes] = useState()
     const [tipoPagos, setTipoPagos] = useState()
     const [medicos, setMedicos] = useState()
+    const [celularPaciente, setCelularPaciente] = useState()
+
     useEffect(() => {
         bdCitas.get(`/v1/pacientes`, getAuthHeaders())
             .then(res => {
                 setPacientes(res.data.data)
-                console.log(res.data.data)
-
             })
             .catch(err => console.log(err))
     }, [])
@@ -47,6 +47,17 @@ const FormMultiuso = ({
             })
             .catch(err => console.log(err))
     }, [])
+
+    useEffect(() => {
+        if (pacientes && paciente) {
+            let idPaciente = paciente?.value
+            let pacienteEncontrado = pacientes.find(e => e.id == idPaciente)
+            setCelularPaciente(pacienteEncontrado?.telefono)
+        } else {
+            setCelularPaciente('')
+        }
+    }, [paciente])
+
     const handleChangePaciente = (selected) => {
         setPaciente(selected);
     };
@@ -65,7 +76,6 @@ const FormMultiuso = ({
                 <ModalBody style={{ paddingInline: 100 }}>
                     <form onSubmit={handleSubmit(submit)}>
                         <Row>
-
                             <Col>
                                 <div className='form-group my-2'>
                                     <label htmlFor="paciente">
@@ -81,6 +91,13 @@ const FormMultiuso = ({
                                     />
                                 </div>
                             </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                Número de telefono: <b>{celularPaciente}</b>
+                            </Col>
+                        </Row>
+                        <Row>
                             <Col>
                                 <div className='form-group my-2'>
                                     <label htmlFor="pago_tipo_id">
@@ -171,7 +188,7 @@ const FormMultiuso = ({
                                         {...register("llego")}
                                     >
                                         {estados?.map((estado) => (
-                                            <option key={estado.signo_estado +' - '+estado.nombre_estado} value={estado.signo_estado +' - '+estado.nombre_estado}>
+                                            <option key={estado.signo_estado + ' - ' + estado.nombre_estado} value={estado.signo_estado + ' - ' + estado.nombre_estado}>
                                                 {estado.signo_estado} - {estado.nombre_estado}
                                             </option>
                                         ))}
@@ -189,7 +206,7 @@ const FormMultiuso = ({
                                         {...register("entro")}
                                     >
                                         {estados?.map((estado) => (
-                                            <option key={estado.signo_estado +' - '+estado.nombre_estado} value={estado.signo_estado +' - '+estado.nombre_estado}>
+                                            <option key={estado.signo_estado + ' - ' + estado.nombre_estado} value={estado.signo_estado + ' - ' + estado.nombre_estado}>
                                                 {estado.signo_estado} - {estado.nombre_estado}
                                             </option>
                                         ))}
@@ -200,8 +217,8 @@ const FormMultiuso = ({
                         <div style={{ display: 'flex', justifyContent: 'center', gap: 50 }}>
                             <div>
                                 <label htmlFor="confirmar">Confirmar</label>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input"
+                                <div className="form-check form-switch">
+                                    <input className="form-check-input"
                                         type="checkbox"
                                         role="switch"
                                         id="confirmar"
@@ -212,8 +229,8 @@ const FormMultiuso = ({
 
                             <div>
                                 <label htmlFor="silla">Silla</label>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input"
+                                <div className="form-check form-switch">
+                                    <input className="form-check-input"
                                         type="checkbox"
                                         role="switch"
                                         id="silla"
