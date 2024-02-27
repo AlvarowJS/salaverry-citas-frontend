@@ -216,6 +216,7 @@ const Consultorio = () => {
         register={register}
         reset={reset}
         getAuthHeaders={getAuthHeaders}
+        refresh={refresh}
       />
 
       <Ubicacion

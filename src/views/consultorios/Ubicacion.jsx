@@ -59,7 +59,7 @@ const Ubicacion = ({
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Ubicacion Actulizado',
+                    title: 'Ubicación Actualizada',
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -78,7 +78,6 @@ const Ubicacion = ({
         bdCitas.get(`${URL}/${id}`, getAuthHeaders())
             .then(res => {
                 reset(res.data)
-                console.log(res.data)
             })
             .catch(err => null)
     }
@@ -158,7 +157,7 @@ const Ubicacion = ({
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
-                            title: 'Consultorio Eliminado',
+                            title: 'Ubicación Eliminada',
                             showConfirmButton: false,
                             timer: 1500
                         })

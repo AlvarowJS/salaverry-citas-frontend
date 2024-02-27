@@ -45,7 +45,6 @@ const Login = () => {
     try {
       const response = await bdCitas.post('/v1/login', data);
       const res = response.data;    
-      console.log(res, "?")  
       localStorage.setItem('token', res?.api_token);
       localStorage.setItem('rol', res?.role_id);
       localStorage.setItem('idu', res?.user);

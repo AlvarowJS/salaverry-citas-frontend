@@ -4,7 +4,7 @@ import bdCitas from '../../api/bdCitas'
 
 const FormConsultorio = ({
     modal, toggle, handleSubmit, register, submit,
-    toggleActualizacion, getAuthHeaders
+    toggleActualizacion, getAuthHeaders,refresh
 }) => {
     
     const [options, setOptions] = useState()
@@ -15,7 +15,7 @@ const FormConsultorio = ({
                 console.log(res.data)
             })
             .catch(err => console.log(err))
-    }, [])
+    }, [refresh])
 
     return (
         <Modal isOpen={modal} toggle={toggle} size='lg'>
