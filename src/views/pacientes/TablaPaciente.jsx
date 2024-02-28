@@ -52,7 +52,7 @@ const TablaPaciente = ({
         },
         {
             sortable: true,
-            name: 'Telefono',
+            name: 'Teléfono',
             minWidth: '25px',
             selector: row => row?.telefono
         },

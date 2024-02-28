@@ -1,4 +1,4 @@
-import { Calendar, Check, DollarSign, Edit3, Hash, UserPlus, Users } from "react-feather";
+import { Calendar, Check, DollarSign, Edit3, Hash, UserCheck, UserPlus, Users } from "react-feather";
 
 export default [
   {
@@ -22,7 +22,7 @@ export default [
   {
     id: "Usuarios",
     title: "Usuarios",
-    icon: <UserPlus size={20} />,
+    icon: <UserCheck size={20} />,
     navLink: "/usuarios",
   },
   {

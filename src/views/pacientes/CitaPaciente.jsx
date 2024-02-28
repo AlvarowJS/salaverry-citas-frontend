@@ -31,7 +31,7 @@ const CitaPaciente = ({
        
         {
             sortable: true,
-            name: 'Pago',
+            name: 'Pagó',
             minWidth: '25px',
             maxWidth: '150px',
             selector: row => '$ '+ row?.pago

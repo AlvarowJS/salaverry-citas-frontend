@@ -26,7 +26,7 @@ const FormConsultorio = ({
                 <form onSubmit={handleSubmit(submit)}>
                     <div className='form-group my-2'>
                         <label htmlFor="">
-                            Numero de consultorio
+                            Número de consultorio
                         </label>
                         <input
                             className="form-control"

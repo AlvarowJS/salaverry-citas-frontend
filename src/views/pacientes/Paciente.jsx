@@ -105,7 +105,7 @@ const Paciente = () => {
         Swal.fire({
           position: 'center',
           icon: 'success',
-          title: 'Paciente Actulizado',
+          title: 'Paciente Actualizado',
           showConfirmButton: false,
           timer: 1500
         })

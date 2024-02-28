@@ -46,7 +46,7 @@ const FormPaciente = ({
                     </div>
                     <div className='form-group my-2'>
                         <label htmlFor="">
-                            Telefono
+                            Teléfono
                         </label>
                         <input
                             className="form-control"

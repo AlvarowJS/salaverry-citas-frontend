@@ -58,6 +58,12 @@ const Consultorio = () => {
     setSearch(e.target.value);
   };
 
+  useEffect(() => {
+    setFilter(data?.filter(e =>
+      e.numero_consultorio.toLowerCase().includes(search.toLowerCase())
+    ))
+  }, [search])
+
   // Falta agregar el seach
 
   // Crear Consultorio
@@ -181,7 +187,7 @@ const Consultorio = () => {
             type='text'
             bsSize='sm'
             id='search-input'
-            placeholder='buscar por nombre y apellidos'
+            placeholder='buscar por número de consultorio'
             onChange={handleFilter}
           />
         </Col>

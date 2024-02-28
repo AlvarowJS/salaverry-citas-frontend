@@ -246,7 +246,7 @@ const TablaCitas = ({
         },
         {
             sortable: true,
-            name: 'Llego',
+            name: 'Llegó',
             minWidth: '25px',
             maxWidth: '200px',
             selector: row => {
@@ -261,7 +261,7 @@ const TablaCitas = ({
         },
         {
             sortable: true,
-            name: 'Entro',
+            name: 'Entró',
             minWidth: '25px',
             maxWidth: '200px',
             selector: row => {
@@ -276,7 +276,7 @@ const TablaCitas = ({
         },
         {
             sortable: true,
-            name: 'Pago',
+            name: 'Pagó',
             minWidth: '25px',
             maxWidth: '100px',
             selector: row => row?.pago

@@ -52,7 +52,7 @@ const Estado = () => {
 
   useEffect(() => {
     setFilter(data?.filter(e =>     
-      e.nombre_estado.toLowerCase().includes(search.toLowerCase())
+      e?.nombre_estado.toLowerCase().includes(search?.toLowerCase())
     ))
   }, [search])
   // Crear Tipo de Estado
@@ -175,7 +175,7 @@ const Estado = () => {
             type='text'
             bsSize='sm'
             id='search-input'
-            placeholder='Buscar pago'
+            placeholder='Buscar estado'
             onChange={handleFilter}
           />
         </Col>

@@ -6,6 +6,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import TablaCitas from './TablaCitas'
 import TablaMultiusos from './TablaMultiusos'
+import { Search } from 'react-feather'
 const MySwal = withReactContent(Swal)
 const URL = '/v1/citas'
 const URLUSO = '/v1/multiusos'
@@ -82,6 +83,7 @@ const Citas = () => {
     bdCitas.get(`${URL}?date=${fechaFilter}`, getAuthHeaders())
       .then(res => {
         setCitas(res?.data)
+        setFilterCitas(res?.data)
       })
       .catch(err => {
       })
@@ -125,11 +127,16 @@ const Citas = () => {
           <h2>{handleDate}</h2>
 
         </Col>
-        <Col sm="6">
+        <Col sm="3">
+        </Col>
+        <Col sm="3">
+
           <input type="text"
             className='form-control'
+            placeholder='Buscar por nombre'
             onChange={buscarNombre}
           />
+
         </Col>
         <Col sm="3">
           <input type="date"
