@@ -37,7 +37,7 @@ const ReporteMedico = ({
     }
     const exportarPdf = () => {
         if (reporte.medico_id && reporte.start_date && reporte.end_date) {
-            window.open(`https://backend.tms2.nuvola7.com.mx/api/v1/medico-citas?start_date=${reporte.start_date}&end_date=${reporte.end_date}&medico_id=${reporte.medico_id}`)
+            window.open(`http://127.0.0.1:8000/api/v1/medico-citas?start_date=${reporte.start_date}&end_date=${reporte.end_date}&medico_id=${reporte.medico_id}`)
         }
     }
     const optionsMedicos = medicos?.map(optionMedico => ({

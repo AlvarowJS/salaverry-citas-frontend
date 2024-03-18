@@ -10,16 +10,16 @@ import FormMultiuso from './FormMultiuso'
 const MySwal = withReactContent(Swal)
 const TablaMultiusos = ({
     multiuso, dateChange, handleDate,
-    getAuthHeaders, URL, refresh, setRefresh
+    getAuthHeaders, URL, refresh, setRefresh,
+    dataSelect
 }) => {
-
-    console.log(URL, "?")
+    
     const [modal, setModal] = useState(false)
     const [montoTotal, setMontoTotal] = useState()
     const { handleSubmit, register, reset } = useForm()
     const [actualizacion, setActualizacion] = useState(false)
     const [paciente, setPaciente] = useState()
-
+    
     const defaulValuesForm = {
         id: '',
         confirmar: '',
@@ -380,6 +380,7 @@ const TablaMultiusos = ({
                 getAuthHeaders={getAuthHeaders}
                 paciente={paciente}
                 setPaciente={setPaciente}
+                dataSelect={dataSelect}
             />
 
         </>
