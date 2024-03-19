@@ -14,56 +14,28 @@ const FormMultiuso = ({
   paciente,
   setPaciente,
   dataSelect,
-
+  setDoctor,
+  visitas
 }) => {
+
+  const [medicos, setMedicos] = useState();
   const [estados, setEstados] = useState();
   const [pacientes, setPacientes] = useState();
   const [tipoPagos, setTipoPagos] = useState();
-  const [medicos, setMedicos] = useState();
   const [celularPaciente, setCelularPaciente] = useState();
 
-  useEffect(() => {    
+  const handleDoctorChange = (event) => {
+    const selectedId = event.target.value;
+    console.log(selectedId, "ay no")
+    setDoctor(selectedId);
+  };
+
+  useEffect(() => {
     setPacientes(dataSelect?.pacientes)
     setMedicos(dataSelect?.medicos)
     setTipoPagos(dataSelect?.pagos)
-    setEstados(dataSelect?.estados)    
+    setEstados(dataSelect?.estados)
   }, [])
-  
-//   useEffect(() => {
-//     bdCitas
-//       .get(`/v1/pacientes`, getAuthHeaders())
-//       .then((res) => {
-//         setPacientes(res.data.data);
-//       })
-//       .catch((err) => console.log(err));
-//   }, []);
-
-//   useEffect(() => {
-//     bdCitas
-//       .get(`/v1/medicos`, getAuthHeaders())
-//       .then((res) => {
-//         setMedicos(res.data);
-//       })
-//       .catch((err) => console.log(err));
-//   }, []);
-
-//   useEffect(() => {
-//     bdCitas
-//       .get(`/v1/pagos`, getAuthHeaders())
-//       .then((res) => {
-//         setTipoPagos(res.data);
-//       })
-//       .catch((err) => console.log(err));
-//   }, []);
-
-//   useEffect(() => {
-//     bdCitas
-//       .get(`/v1/estados`, getAuthHeaders())
-//       .then((res) => {
-//         setEstados(res.data);
-//       })
-//       .catch((err) => console.log(err));
-//   }, []);
 
   useEffect(() => {
     if (pacientes && paciente) {
@@ -122,6 +94,8 @@ const FormMultiuso = ({
                     className="form-select"
                     id="medico_id"
                     {...register("medico_id")}
+                    onChange={handleDoctorChange}
+
                   >
                     {medicos?.map((medico) => (
                       <option key={medico.id} value={medico.id}>
@@ -189,20 +163,18 @@ const FormMultiuso = ({
             <Row>
               <Col>
                 <div className="form-group my-2">
-                  <label htmlFor="llego">Llegó</label>
+                  <label htmlFor="llego">Visita</label>
                   <select
                     className="form-select"
                     id="llego"
                     {...register("llego")}
                   >
-                    {estados?.map((estado) => (
+                    {visitas?.map((visita) => (
                       <option
-                        key={estado.signo_estado + " - " + estado.nombre_estado}
-                        value={
-                          estado.signo_estado + " - " + estado.nombre_estado
-                        }
+                        key={visita.id}
+                        value={visita.nombre}
                       >
-                        {estado.signo_estado} - {estado.nombre_estado}
+                        {visita.nombre}
                       </option>
                     ))}
                   </select>

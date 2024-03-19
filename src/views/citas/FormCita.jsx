@@ -22,6 +22,7 @@ const FormCita = ({
   const [consultorios, setConsultorios] = useState();
   const [estados, setEstados] = useState();
   const [celularPaciente, setCelularPaciente] = useState();
+  const [visitas, setVisitas] = useState()
 
   useEffect(() => {
     // console.log(dataSelect, "que pasa akakakka");
@@ -30,6 +31,7 @@ const FormCita = ({
     setConsultorios(dataSelect?.consultorios);
     setTipoPagos(dataSelect?.pagos);
     setEstados(dataSelect?.estados);
+    setVisitas(dataSelect?.visita)
   }, [toggle]);
 
   useEffect(() => {
@@ -181,8 +183,14 @@ const FormCita = ({
                     id="llego"
                     {...register("llego")}
                   >
-                    <option value="">1ra vez</option>
-                    <option value="">Subsecuente</option>
+                    {visitas?.map((visita) => (
+                      <option
+                        key={visita?.id}
+                        value={visita?.nombre}
+                      >
+                        {visita?.nombre}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </Col>

@@ -175,7 +175,7 @@ const TablaCitas = ({
     },
     {
       sortable: true,
-      name: "Llegó",
+      name: "Visita",
       minWidth: "25px",
       maxWidth: "200px",
       selector: (row) => {

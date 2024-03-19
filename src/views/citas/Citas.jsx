@@ -54,15 +54,16 @@ const Citas = () => {
   // Precargar los selects
   // Mostrar los datos de pacientes, medicos, estados, consultorios y tipo de pagos
   useEffect(() => {
+
     bdCitas
-      .get(URLSELECT, getAuthHeaders())
+      .get(`${URLSELECT}?paciente_id=${paciente?.value}&medico_id=${doctor}`, getAuthHeaders())
       .then((res) => {
         setDataSelect(res?.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [paciente?.value, doctor]);
 
   // citas form
   const [modal, setModal] = useState(false);
@@ -104,12 +105,13 @@ const Citas = () => {
     setActualizacion(false);
     reset(defaulValuesForm);
     setModal(!modal);
-    setDoctor(id)
-  };
+    setDoctor(id);
 
+  };
   const toggleActualizacion = () => {
     setActualizacion(true);
     setModal(!modal);
+    // setDoctor(id);
   };
   const actualizarCitaId = (id) => {
     toggleActualizacion.call();
@@ -221,8 +223,7 @@ const Citas = () => {
   };
 
   useEffect(() => {
-    let fechaFormateada = dateNow();
-    console.log(fechaFormateada, "???");
+    let fechaFormateada = dateNow();    
     setHandleDate(fechaFormateada[0]);
   }, []);
 
@@ -299,7 +300,8 @@ const Citas = () => {
           setRefresh={setRefresh}
           URL={URLUSO}
           getAuthHeaders={getAuthHeaders}
-          dataSelect={dataSelect}
+          dataSelect={dataSelect} 
+          URLSELECT={URLSELECT}
         />
       ))}
       {filterCitas

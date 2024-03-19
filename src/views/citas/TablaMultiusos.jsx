@@ -8,18 +8,21 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import FormMultiuso from './FormMultiuso'
 const MySwal = withReactContent(Swal)
+const URLVISITA = "/v1/citas-visitas"
 const TablaMultiusos = ({
     multiuso, dateChange, handleDate,
     getAuthHeaders, URL, refresh, setRefresh,
     dataSelect
 }) => {
-    
+
     const [modal, setModal] = useState(false)
     const [montoTotal, setMontoTotal] = useState()
     const { handleSubmit, register, reset } = useForm()
     const [actualizacion, setActualizacion] = useState(false)
     const [paciente, setPaciente] = useState()
-    
+    const [doctor, setDoctor] = useState()
+    const [visitas, setVisitas] = useState()
+
     const defaulValuesForm = {
         id: '',
         confirmar: '',
@@ -36,6 +39,18 @@ const TablaMultiusos = ({
         medico_id: '',
         multiuso_id: ''
     }
+
+    useEffect(() => {
+        bdCitas
+            .get(`${URLVISITA}?paciente_id=${paciente?.value}&medico_id=${doctor}`, getAuthHeaders())
+            .then((res) => {
+                setVisitas(res?.data?.visita);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, [paciente, doctor]);
+
     const calcularSuma = () => {
         const suma = multiuso?.citas.reduce((total, objeto) => {
             return total + objeto?.pago;
@@ -44,7 +59,6 @@ const TablaMultiusos = ({
     }
 
     const crearCita = (data) => {
-        console.log(data, "lolol")
         bdCitas.post(URL, data, getAuthHeaders())
             .then(res => {
                 reset(defaulValuesForm)
@@ -53,24 +67,35 @@ const TablaMultiusos = ({
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Usuario creado',
+                    title: 'Cita creada',
                     showConfirmButton: false,
                     timer: 1500
                 })
             })
             .catch(err => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Contacte con soporte',
-                    showConfirmButton: false,
-                })
+                if (err.response.status == 409) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Horario ya registrado',
+                        showConfirmButton: false,
+                    })
+                }
+                else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Contacte con soporte',
+                        showConfirmButton: false,
+                    })
+                }
             })
     }
     const toggle = () => {
         setActualizacion(false)
         reset(defaulValuesForm)
         setModal(!modal)
+
     }
 
     const toggleActualizacion = () => {
@@ -272,9 +297,9 @@ const TablaMultiusos = ({
         },
         {
             sortable: true,
-            name: 'Llegó',
-            minWidth: '25px',
-            maxWidth: '200px',
+            name: 'Visitas',
+            // minWidth: '50px',
+            // maxWidth: '240px',
             selector: row => {
                 return (
                     <>
@@ -381,6 +406,8 @@ const TablaMultiusos = ({
                 paciente={paciente}
                 setPaciente={setPaciente}
                 dataSelect={dataSelect}
+                setDoctor={setDoctor}
+                visitas={visitas}
             />
 
         </>
