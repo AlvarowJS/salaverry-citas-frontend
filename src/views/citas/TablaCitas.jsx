@@ -19,7 +19,7 @@ const TablaCitas = ({
   dataSelect,
   toggle,
   setDoctor,
-  actualizarCitaId
+  actualizarCitaId,
 }) => {
   const [actualizacion, setActualizacion] = useState(false);
   const [montoTotal, setMontoTotal] = useState();
@@ -84,7 +84,6 @@ const TablaCitas = ({
     bdCitas
       .put(`${URL}/${id}`, objConfir, getAuthHeaders())
       .then((res) => {
-        reset(defaulValuesForm);
         Swal.fire({
           position: "center",
           icon: "success",
@@ -94,10 +93,10 @@ const TablaCitas = ({
         });
       })
       .catch((err) => {
-        
+        console.log(err, "as")
       });
   };
-  
+
   const columns = [
     {
       sortable: true,
@@ -114,7 +113,7 @@ const TablaCitas = ({
               value=""
               aria-label="..."
               // checked={row?.confirmar}
-              checked={!!confirmaciones[row.id]}
+              checked={Object.keys(confirmaciones).length == 0 ? row?.confirmar : confirmaciones[row.id]}
               onChange={(e) => manejarCambioCheckbox(row.id, e.target.checked)}
             />
           </>
@@ -261,8 +260,7 @@ const TablaCitas = ({
             <h4>Pago Total: $ {calcularSuma()}</h4>
           </Col>
           <Col>
-            <Button color="info" onClick={() => toggle(cita?.id)}              
-            >
+            <Button color="info" onClick={() => toggle(cita?.id)}>
               + Asignar Cita
             </Button>
           </Col>
@@ -275,7 +273,6 @@ const TablaCitas = ({
           data={cita.citas}
         />
       </Card>
-
     </>
   );
 };
