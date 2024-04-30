@@ -70,7 +70,6 @@ const Consultorio = () => {
   const crearConsultorio = (data) => {
     bdCitas.post(URL, data, getAuthHeaders())
       .then(res => {
-        console.log(res.data)
         reset(defaulValuesForm)
         toggle.call()
         setRefresh(!refresh)
@@ -96,7 +95,6 @@ const Consultorio = () => {
   const actualizarConsultorio = (id, data) => {
     bdCitas.put(`${URL}/${id}`, data, getAuthHeaders())
       .then(res => {
-        console.log(res.data)
         reset(defaulValuesForm)
         toggle.call()
         setRefresh(!refresh)

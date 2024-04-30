@@ -93,7 +93,6 @@ const TablaCitas = ({
         });
       })
       .catch((err) => {
-        console.log(err, "as")
       });
   };
 

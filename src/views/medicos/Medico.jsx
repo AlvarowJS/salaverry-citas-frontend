@@ -77,7 +77,6 @@ const Medico = () => {
   const crearMedico = (data) => {
     bdCitas.post(URL, data, getAuthHeaders())
       .then(res => {
-        console.log(res.data)
         reset(defaulValuesForm)
         toggle.call()
         setRefresh(!refresh)
@@ -103,7 +102,6 @@ const Medico = () => {
   const actualizarMedico = (id, data) => {
     bdCitas.put(`${URL}/${id}`, data, getAuthHeaders())
       .then(res => {
-        console.log(res.data)
         reset(defaulValuesForm)
         toggle.call()
         setRefresh(!refresh)

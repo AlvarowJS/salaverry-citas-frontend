@@ -26,7 +26,6 @@ const FormMultiuso = ({
 
   const handleDoctorChange = (event) => {
     const selectedId = event.target.value;
-    console.log(selectedId, "ay no")
     setDoctor(selectedId);
   };
 

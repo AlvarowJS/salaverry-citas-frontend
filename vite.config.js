@@ -13,9 +13,9 @@ export default () => {
     },
     server: {
       port: 3000,
-      proxy: 'https://backend.alven-inmobiliaria.com.mx/',
+      proxy: 'https://backend.tms2.nuvola7.com.mx',
       cors: {
-        origin: ['https://backend.alven-inmobiliaria.com.mx/', 'http://localhost:3000'],
+        origin: ['https://backend.tms2.nuvola7.com.mx'],
         methods: ['GET', 'PATCH', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
       }

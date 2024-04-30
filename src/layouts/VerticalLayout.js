@@ -17,10 +17,8 @@ const VerticalLayout = (props) => {
   // }, [])
   const rol = localStorage?.getItem("rol");
   let filteredNavigation = [];
-  console.log(rol)
-  console.log(navigation)
+
   if (rol == "2") {
-    console.log(navigation. rol, "??")
     // filteredNavigation = navigation.slice(0, 2); // Obtener los primeros dos elementos del array
     filteredNavigation = [navigation[0],navigation[1]]
   } else if (rol == "1") {

@@ -12,7 +12,6 @@ const FormMedico = ({
         bdCitas.get(`/v1/consultorio`, getAuthHeaders())
             .then(res => {
                 setOptions(res.data)
-                console.log(res.data)
             })
             .catch(err => console.log(err))
     }, [])

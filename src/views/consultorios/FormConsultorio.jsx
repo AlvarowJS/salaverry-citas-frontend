@@ -12,7 +12,6 @@ const FormConsultorio = ({
         bdCitas.get(`/v1/ubicacion`, getAuthHeaders())
             .then(res => {
                 setOptions(res.data)
-                console.log(res.data)
             })
             .catch(err => console.log(err))
     }, [refresh])
