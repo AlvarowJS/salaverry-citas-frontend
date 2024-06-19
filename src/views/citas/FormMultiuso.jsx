@@ -115,6 +115,7 @@ const FormMultiuso = ({
                     className="form-control"
                     id="fecha"
                     {...register("fecha")}
+                    required
                   />
                 </div>
               </Col>
@@ -126,6 +127,7 @@ const FormMultiuso = ({
                     className="form-control"
                     id="hora"
                     {...register("hora")}
+                    required
                   />
                 </div>
               </Col>

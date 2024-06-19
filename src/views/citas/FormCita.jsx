@@ -111,6 +111,7 @@ const FormCita = ({
                     className="form-control"
                     id="fecha"
                     {...register("fecha")}
+                    required
                   />
                 </div>
               </Col>
@@ -122,6 +123,7 @@ const FormCita = ({
                     className="form-control"
                     id="hora"
                     {...register("hora")}
+                    required
                   />
                 </div>
               </Col>
@@ -135,6 +137,7 @@ const FormCita = ({
                     className="form-control"
                     id="pago"
                     {...register("pago")}
+                    
                   />
                 </div>
               </Col>
